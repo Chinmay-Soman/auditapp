@@ -10,7 +10,11 @@ SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
-CREDS = Credentials.from_service_account_file("credentials.json", scopes=SCOPE)
+import json
+CREDS = Credentials.from_service_account_info(
+    json.loads(st.secrets["GOOGLE_CREDENTIALS"]),
+    scopes=SCOPE
+)
 CLIENT = gspread.authorize(CREDS)
 SHEET = CLIENT.open("Auditapp").sheet1  # replace with your sheet name
 
@@ -214,3 +218,4 @@ with st.expander("View current sheet data"):
             st.info("Sheet is empty.")
     except Exception as e:
         st.error(f"Failed to load sheet: {e}")
+
